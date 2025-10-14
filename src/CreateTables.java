@@ -9,7 +9,7 @@ public class CreateTables {
 		try {
 			//Set up connection parameters
 			String userName = "root";
-			String password = "Franky12!";
+			String password = "password";
 			String dbServer = "jdbc:mysql://localhost:3306/project1";
 			//Set up connection
 			connect = DriverManager.getConnection(dbServer,userName,password);
@@ -22,7 +22,7 @@ public class CreateTables {
 			stmt = connect.createStatement();
 			//sql1 is the string of the sql code
 			String create_student = "CREATE TABLE students (\r\n" + 
-					"	snum INT,\r\n" + 
+					"	sid INT NOT NULL,\r\n" + 
 					"	ssn INTEGER,\r\n" + 
 					"    name VARCHAR(10),\r\n" + 
 					"    gender VARCHAR(1),\r\n" + 
@@ -32,21 +32,76 @@ public class CreateTables {
 					"    p_addr VARCHAR(20),\r\n" + 
 					"    p_phone VARCHAR(10),\r\n" + 
 					"    PRIMARY KEY(ssn),\r\n" + 
-					"    UNIQUE(snum)\r\n" + 
+					"    UNIQUE(sid)\r\n" + 
 					");";
 			// To update data in a database, call the executeUpdate(String SQL) method
 			stmt.executeUpdate(create_student);	
 			System.out.println("Created students table");  
             create_student = "create table departments("+
-	"dcode int,"+
-    "    dname varchar(50) NOT NULL,"+
-    "    phone varchar(10),"+
-    "    college varchar(20),"+
-    "    primary key(dcode),"+
-    "    unique key(dname)"+
-	");";
+							"    dcode int,"+
+    						"    dname varchar(50) NOT NULL,"+
+    						"    phone varchar(10),"+
+    						"    college varchar(20),"+
+    						"    primary key(dcode),"+
+    						"    unique key(dname)"+
+							");";
             stmt.executeUpdate(create_student);
             System.out.println("Created departments table");
+
+			create_student = "create table degrees("+
+							"    dgname varchar(50),"+
+							"    level varchar(5),"+
+							"    department_code int,"+
+							"    primary key(dgname, level),"+
+							"    foreign key(department_code) references departments(dcode)"+
+							");";
+			stmt.executeUpdate(create_student);
+			System.out.println("Created degrees table");
+			create_student = "create table courses("+
+							"    cnumber int,"+
+							"    cname varchar(50),"+
+							"    level varchar(20),"+
+							"    creditshours int,"+
+							"    department_code int,"+
+							"    primary key(cnumber),"+
+							"    foreign key(department_code) references departments(dcode)"+
+							");";
+			stmt.executeUpdate(create_student);
+			System.out.println("Created courses table");
+			create_student = "create table register("+
+							"    sid int,"+
+							"    course_number int,"+
+							"    reg_time varchar(20),"+
+							"    grade int,"+
+							"    primary key(sid, course_number),"+
+							"    foreign key(sid) references students(sid),"+
+							"    foreign key(course_number) references courses(cnumber)"+
+							");";
+			stmt.executeUpdate(create_student);
+			System.out.println("Created register table");
+			create_student = "create table major("+
+							"    sid int,"+
+							"    name varchar(50),"+
+							"    level varchar(5),"+
+							"    primary key(sid, name, level),"+
+							"    foreign key(sid) references students(sid),"+
+							"    foreign key(name, level) references degrees(dgname, level)"+
+							");";
+
+			stmt.executeUpdate(create_student);
+			System.out.println("Created major table");
+
+			create_student = "create table minor("+
+							"    sid int,"+
+							"    name varchar(50),"+
+							"    level varchar(5),"+
+							"    primary key(sid, name, level),"+
+							"    foreign key(sid) references students(sid),"+
+							"    foreign key(name, level) references degrees(dgname, level)"+
+							");";
+			stmt.executeUpdate(create_student);
+			System.out.println("Created minor table");
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -61,19 +116,7 @@ public class CreateTables {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
-		try {
-			//insert multiple records
-			stmt.addBatch("INSERT INTO students VALUE ("
-					+ "1001,65465234,'Randy','M','2000-12-01','301 E Hall','5152700988','121 Main','7083066321');");				
-			stmt.addBatch("INSERT INTO students VALUE ("
-					+ "1002,123456789,'Vicky','F','2000-12-01','301 E Hall','5152700988','121 Main','7083066321');");				
-			stmt.executeBatch();
-			System.out.println("insert records in table ...");  
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 		
+		
 		
 		try {
 			//To execute a SELECT query, call the executeQuery(String) method with the SQL to use
