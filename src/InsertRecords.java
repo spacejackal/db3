@@ -10,18 +10,20 @@ public class InsertRecords {
 			//Set up connection parameters
 			String userName = "root";
 			String password = "password";
-			String dbServer = "jdbc:mysql://localhost:3306/project1";
+			String dbServer = "jdbc:mysql://localhost:3306/project1?allowLoadLocalInfile=true";
 			//Set up connection
 			connect = DriverManager.getConnection(dbServer,userName,password);
 		} catch(Exception e) {
-
+			e.printStackTrace();
+			System.out.println("Failed to connect to database");
+			return; // Exit if connection fails
 		}
 		//initiate sql statement
 		Statement stmt = null;
 		try {
             stmt = connect.createStatement();
-            String val = "LOAD data local"+
-             "infile 'students.csv'"+
+            String val = "LOAD data local "+
+             "infile 'students.csv' "+
             " into table students"+
             " fields terminated by ','"+
             " enclosed by '\"'"+
@@ -31,8 +33,8 @@ public class InsertRecords {
             stmt.executeUpdate(val);
             System.out.println("Inserted records into students table");
 
-            val = "LOAD data local"+
-             "infile 'departments.csv'"+
+            val = "LOAD data local "+
+             "infile 'departments.csv' "+
             " into table departments"+
             " fields terminated by ','"+
             " enclosed by '\"'"+
@@ -42,8 +44,8 @@ public class InsertRecords {
             stmt.executeUpdate(val);
             System.out.println("Inserted records into departments table");
 
-            val = "LOAD data local"+
-             " infile 'degrees.csv'"+
+            val = "LOAD data local "+
+             "infile 'degrees.csv' "+
             " into table degrees"+
             " fields terminated by ','"+
             " enclosed by '\"'"+
@@ -53,8 +55,8 @@ public class InsertRecords {
             stmt.executeUpdate(val);
             System.out.println("Inserted records into degrees table");
 
-            val = "LOAD data local"+
-                " infile 'majors.csv'"+
+            val = "LOAD data local "+
+                "infile 'major.csv' "+
                 " into table majors"+
                 " fields terminated by ','"+
                 " enclosed by '\"'"+
