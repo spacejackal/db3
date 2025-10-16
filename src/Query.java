@@ -81,7 +81,6 @@ public class Query {
                            "WHERE male_count > female_count;";
 
              rs = stmt.executeQuery(query_student);
-             System.out.println("\nDegrees with more male than female students:");
              System.out.println("Degree Name | Level | Male Count | Female Count");
              
              while(rs.next()){
