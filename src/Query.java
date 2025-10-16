@@ -81,7 +81,7 @@ public class Query {
                            "WHERE male_count > female_count;";
 
              rs = stmt.executeQuery(query_student);
-             System.out.println("Degree Name | Level | Male Count | Female Count");
+             System.out.println("\nDegree Name | Level | Male Count | Female Count");
              
              while(rs.next()){
                  System.out.println(rs.getString("degree_name") + " | " + 
