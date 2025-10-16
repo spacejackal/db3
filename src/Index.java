@@ -1,10 +1,11 @@
 
 import java.sql.*;
-public class Query {
+public class Index {
 	private static Connection connect = null;
 
 	public static void main(String[] args) 
 	{
+        long queryExecutionTime = 0; 
 
 		try {
 			//Set up connection parameters
@@ -23,44 +24,10 @@ public class Query {
 		
 		try {
 			stmt = connect.createStatement();
-			//To execute a SELECT query, call the executeQuery(String) method with the SQL to use
-			String query_student = "SELECT c.cnumber, c.cname, AVG(r.grade) as average_grade " +
-								   "FROM courses c " +
-								   "JOIN register r ON c.cnumber = r.course_number " +
-								   "GROUP BY c.cnumber, c.cname " +
-								   "ORDER BY c.cnumber;";
-					
 			
-			ResultSet rs = stmt.executeQuery(query_student);
-        	System.out.println("Course Numbers, names, average Grades:");	
-  
-	         while(rs.next()){
-	            //Display values
-	             System.out.println(rs.getInt("cnumber") + " | " + 
-	                              rs.getString("cname") + " | " + 
-	                              String.format("%.2f", rs.getDouble("average_grade")));
-	         }
-
-
-
-             query_student = "SELECT COUNT(DISTINCT s.sid) as female_count " +
-                           "FROM students s " +
-                           "JOIN departments d ON d.college = 'LAS' " +
-                           "JOIN degrees deg ON deg.department_code = d.dcode " +
-                           "WHERE s.gender = 'F' AND (" +
-                           "  EXISTS (SELECT 1 FROM major maj WHERE maj.sid = s.sid AND maj.name = deg.dgname AND maj.level = deg.level) OR " +
-                           "  EXISTS (SELECT 1 FROM minor min WHERE min.sid = s.sid AND min.name = deg.dgname AND min.level = deg.level)" +
-                           ");";
-
-             rs = stmt.executeQuery(query_student);
-             System.out.println("\nCount of female students in LAS:");
-             
-             while(rs.next()){
-                 System.out.println("Female students count: " + rs.getInt("female_count"));
-             }
-
-             
-               query_student = "WITH student_degrees AS (" +
+			
+			
+            String query_student = "WITH student_degrees AS (" +
             "  SELECT DISTINCT s.sid, s.gender, maj.name, maj.level  " +
             "  FROM students s " +
             "  JOIN major maj ON s.sid = maj.sid " +
@@ -90,9 +57,13 @@ public class Query {
             "JOIN FemaleCounts f ON m.degree_name = f.degree_name AND m.degree_level = f.degree_level " +
             "WHERE m.male_count > f.female_count;";
 
-             rs = stmt.executeQuery(query_student);
-             System.out.println("\nDegree Name | Level | Male Count | Female Count");
-             
+			long queryStartTime = System.nanoTime();
+            ResultSet rs = stmt.executeQuery(query_student);
+            long queryEndTime = System.nanoTime();
+            queryExecutionTime = queryEndTime - queryStartTime;
+            System.out.println("Degree Name | Level | Male Count | Female Count");
+            System.out.println("--------------------------------------------------");
+                           
              while(rs.next()){
                  System.out.println(rs.getString("degree_name") + " | " + 
                                   rs.getString("degree_level") + " | " + 
@@ -100,7 +71,9 @@ public class Query {
                                   rs.getInt("female_count"));
              }
 
-             
+             // End timing for query execution
+
+             System.out.println("\nQuery execution time: " + queryExecutionTime + " nanoseconds");
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -120,5 +93,6 @@ public class Query {
 				e.printStackTrace();
 			}
 		}
+		
 	}
 }
