@@ -8,15 +8,13 @@ public class Query {
 
 		try {
 			//Set up connection parameters
-			String userName = "root";
+			String userName = "coms363";
 			String password = "password";
 			String dbServer = "jdbc:mysql://localhost:3306/project1";
 			//Set up connection
 			connect = DriverManager.getConnection(dbServer,userName,password);
 		} catch(Exception e) {
-			e.printStackTrace();
-			System.out.println("Failed to connect to database");
-			return; // Exit if connection fails
+
 		}
 		//initiate sql statement
 		Statement stmt = null;
