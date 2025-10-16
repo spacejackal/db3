@@ -65,6 +65,40 @@ public class InsertRecords {
                 " (sid,name,level);";
             stmt.executeUpdate(val);
             System.out.println("Inserted records into majors table");
+
+            val = "LOAD data local "+
+                "infile 'minor.csv' "+
+                " into table minors"+
+                " fields terminated by ','"+
+                " enclosed by '\"'"+
+                " lines terminated by '\r\n'"+
+                " ignore 1 rows"+
+                " (sid,name,level);";
+            stmt.executeUpdate(val);
+            System.out.println("Inserted records into minors table");
+
+            val = "LOAD data local "+
+                "infile 'courses.csv' "+
+                " into table courses"+
+                " fields terminated by ','"+
+                " enclosed by '\"'"+
+                " lines terminated by '\r\n'"+
+                " ignore 1 rows"+
+                " (cnumber,cname,description,credithours,level,department_code);";
+            stmt.executeUpdate(val);
+            System.out.println("Inserted records into courses table");
+
+            val = "LOAD data local "+
+                "infile 'register.csv' "+
+                " into table register"+
+                " fields terminated by ','"+
+                " enclosed by '\"'"+
+                " lines terminated by '\r\n'"+
+                " ignore 1 rows"+
+                " (sid, course_number, regtime, grade);";
+            stmt.executeUpdate(val);
+            System.out.println("Inserted records into register table");
+
         } catch (SQLException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
