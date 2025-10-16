@@ -57,7 +57,7 @@ public class InsertRecords {
 
             val = "LOAD data local "+
                 "infile 'major.csv' "+
-                " into table majors"+
+                " into table major"+
                 " fields terminated by ','"+
                 " enclosed by '\"'"+
                 " lines terminated by '\r\n'"+
@@ -68,7 +68,7 @@ public class InsertRecords {
 
             val = "LOAD data local "+
                 "infile 'minor.csv' "+
-                " into table minors"+
+                " into table minor"+
                 " fields terminated by ','"+
                 " enclosed by '\"'"+
                 " lines terminated by '\r\n'"+
@@ -84,7 +84,7 @@ public class InsertRecords {
                 " enclosed by '\"'"+
                 " lines terminated by '\r\n'"+
                 " ignore 1 rows"+
-                " (cnumber,cname,description,credithours,level,department_code);";
+                " (cnumber,cname,description,creditshours,level,department_code);";
             stmt.executeUpdate(val);
             System.out.println("Inserted records into courses table");
 

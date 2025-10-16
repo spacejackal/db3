@@ -60,8 +60,9 @@ public class CreateTables {
 			create_student = "create table courses("+
 							"    cnumber int,"+
 							"    cname varchar(50),"+
-							"    level varchar(20),"+
+							"    description varchar(100),"+
 							"    creditshours int,"+
+							"    level varchar(20),"+
 							"    department_code int,"+
 							"    primary key(cnumber),"+
 							"    foreign key(department_code) references departments(dcode)"+
@@ -71,7 +72,7 @@ public class CreateTables {
 			create_student = "create table register("+
 							"    sid int,"+
 							"    course_number int,"+
-							"    reg_time varchar(20),"+
+							"    regtime varchar(20),"+
 							"    grade int,"+
 							"    primary key(sid, course_number),"+
 							"    foreign key(sid) references students(sid),"+
